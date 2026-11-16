@@ -1,0 +1,11 @@
+{
+  "name": "safeship-local",
+  "owner": { "name": "Boon Yong Yeow" },
+  "plugins": [
+    {
+      "name": "safeship",
+      "source": "./",
+      "description": "Guided bug-fix workflow (ticket to PR) plus a git guard that keeps work off main."
+    }
+  ]
+}

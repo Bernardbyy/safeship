@@ -1,0 +1,6 @@
+{
+  "name": "safeship",
+  "version": "0.1.0",
+  "description": "Guided bug-fix workflow (ticket to PR) plus a git guard that keeps work off main.",
+  "author": { "name": "Boon Yong Yeow" }
+}
