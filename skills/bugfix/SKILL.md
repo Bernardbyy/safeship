@@ -61,14 +61,22 @@ Suggest how to prove **this** fix: the same page and filters as the before shot,
 names that pair with the before shots. Wait for "verified". Record in `progress.md` how it was verified.
 
 ### 6. Commit message (checkpoint)
-Draft from `git diff --staged` in Conventional Commits form (use the `yy-draft-git-commit-msg` skill if it
-exists). Per `commit_message`: show the short and long versions and let the user pick (`ask`), or use the
-preferred one. Every claim in the body must match the diff and the measured numbers, with no mixed date windows.
-**Never** add a Claude co-author or a "Generated with Claude Code" line.
+Draft it following `commit-message.md` (next to this file). Show it and wait for "ok" or changes.
 
 ### 7. Push
-Stage only this change's files **by name** (never `git add .`), commit, `git push -u origin <branch>`.
-The guard enforces the never-stage list and main protection; if it blocks, fix the cause and retry.
+Stage only this change's files **by name** (never `git add .`), commit. Then, before pushing:
+- `git fetch origin` and check whether `main` moved since the branch was cut
+  (`git rev-list --count HEAD..origin/main`). If it didn't, push.
+- If it did, `git rebase origin/main`. On conflicts, stop and walk the user through them; never resolve a
+  conflict by guessing.
+- If any commit that came in touches the fix's files (`git diff <old base>..origin/main --stat` against the
+  files in this diff), say which and ask the user to re-check the fix (same view as step 5) before pushing.
+  Otherwise say in one line that nothing overlapped and push.
+- Note in `progress.md`: `rebased onto <sha> (was <sha>)` and whether it was re-checked.
+
+`git push -u origin <branch>`; if the branch was already pushed before the rebase, use
+`--force-with-lease` (only ever on this branch). The guard enforces the never-stage list and main protection;
+if it blocks, fix the cause and retry.
 
 ### 8. PR text (checkpoint)
 Fill in `templates/pr.md`: Before, Why this is wrong / Example, After, with each screenshot's filename where
